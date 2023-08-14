@@ -2,7 +2,7 @@
 
 Nico Malamug, Jiahe Niu, Majin Almuhaideb, Mete Gumusayak
 
-Note: This project is cloned from one of my organization accounts. Commit history may not represent actual team contributions. 
+Note: This project is cloned from one of my organization accounts. Commit history does not represent actual team contributions. 
 
 [Original Documentation](https://docs.google.com/document/d/1a_Y_sPnWuPyXuZQulnAQQ7tt8m6cMErSneYgr6OBkk8)
 
