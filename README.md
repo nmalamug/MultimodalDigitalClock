@@ -1,11 +1,14 @@
-Documentation can be found here: https://docs.google.com/document/d/1a_Y_sPnWuPyXuZQulnAQQ7tt8m6cMErSneYgr6OBkk8/edit
-# 1   Objective
+# Multi-Modal Digital Clock
+
+Nico Malamug, Jiahe Niu, Majin Almuhaideb, Mete Gumusayak
+
+[Original Documentation](https://docs.google.com/document/d/1a_Y_sPnWuPyXuZQulnAQQ7tt8m6cMErSneYgr6OBkk8)
+
+## 1   Objective
 
 The goal of our final project is to design a digital clock with the following features: 12/24 hour clock, stopwatch and timer. The clock is to be described in Verilog HDL, then uploaded onto an FPGA. The results must be projected onto a monitor via an onboard VGA Cable. This project aims to provide us with a deeper understanding of HDL’s and the interfaces used to relay digital signals and data onto monitors and screens.
 
-
-
-# 2.1 Design Description
+## 2.1 Design Description
 
 The project is divided into two sections, the VGA visuals and the clock  internals. The clock is divided into many different submodules that facilitate its operation, this will be discussed further in the report. The VGA Driver syncs the internal clock of the FPGA with the refresh-rate standards of the VGA, allowing us to control the display color pixel-by-pixel. To ease workflow, we divided the screen into various rectangular zones, the sizes of which were determined by the 640x480 limitation set by the VGA.  The aforementioned zones were then put together to form 7-Segment displays, the components of which could be easily manipulated to show any number required by the clock.
 
@@ -13,7 +16,7 @@ The clock-internals were grouped together by a single top module that facilitate
 
 Each sub-module has its intended purpose. The precise implementation will be discussed in section 3.1 & 3.2, for now we will focus on the purpose-driven description. Each module works with and outputs a 24-Bit BCD number. Every 4-Bits represent a unit of time, starting with tens of hours and going down to singular seconds. All the submodules are driven by the 100 Mhz clock, but the incrementing is controlled by a 1Hz output of a clock divider.
 
-## 12/24 Hour Clock 
+### 12/24 Hour Clock 
 
 The system-clock was divided into two modules, one for the 12-Hour AM/PM time, the other for 24-Hour military time. This division was a design choice forced by limitations with the visual-interfacing we described, the details of which are mentioned in Section 2.3. These modules began with a default time of 12:00:00 AM, or 00:00:00. The moment the startup/reset cycle has commenced the clocks check the 1-Hz increment input, and increment whenever it goes high. For the clocks, the increment input is constantly switching on and off at 1-Hz, 50% duty cycle.  The clock operates in the background even after switching modes.
 
@@ -46,7 +49,7 @@ Every design choice made had its own reasons and context. However, they all taug
 
 
 
-# 3.1 Design Implementation
+## 3.1 Design Implementation
 After deciding on a top level design (Fig.1), we began to work. The VGA strobe was largely unchanged from the initial square demonstration, bar a few additions to display a digital clock rather than a grid of squares. Our more intriguing work was on implementing the clock. 
 
 Within our clock module, we routed three buttons, a clock signal, a reset signal, and a switch. All button inputs were debounced. The clock signal was used to control a 1Hz clock, which enabled the timekeeping of the device. All button inputs were debounced and routed to their respective modules. In order to ensure that all modules would not be triggered by the same button press, a decoder was used to send a “button enable” signal to each module to ensure it was only triggered when it was displayed on the screen. The signals from the clock, stopwatch, and timer were then fed into a 24-bit wide 4 to 1 multiplexer, and fed to the VGA strobe. 
@@ -57,11 +60,11 @@ Opting for a simple user interface, our clock functions mostly on single-press b
 ## 3.3 Error Correction 
 Many of the problems we faced were visual in nature, due to our lack of experience in VGA Drivers. The VGA port “maps” its pixels onto a 640x480 screen, which gets blown-up or shrunk-down by the monitor VGA is connected to. This detail made it quite difficult to work with the VGA as we needed to accommodate this growth factor whilst sectioning off portions of the screen as mentioned in section 2. These errors were corrected by defining offset parameters used to adjust the size and location of each digit until they fit into place. 
 
-# 4. Results
+## 4. Results
 
 Using testbenches, we were able to test our designs before their eventual implementation. The verification of our clock, stopwatch, and timer can be found below. Figures can be found in the documentation link above. 
 
 
-# 5. Summary & Conclusions
+## 5. Summary & Conclusions
 
 Working with a project that required external interfacing of the FPGA outputs proved to be a worthwhile challenge. Syncing the horizontal and vertical VGA timings, feeding binary and BCD information between separate modules to build a larger system and facing error after error after error taught us just how intensely important (and slightly frustrating) logic design is. It also gave us insight into our shortcomings on the project and any improvements we can pursue in a second iteration. Some basic ones include module optimization (speed-up and power consumption), size reduction and GUI overhaul. We also considered the addition of more exciting features, such as recording laps, displaying two modes in parallel, alerting when a timer has finished and taking in touchscreen or keyboard inputs. There are many paths we could take on a redesign, of course. Some offer exemplary speed, whilst others could be a swiss-army knife in the world of digital clocks. It is certain that no matter which redesign we would choose to pursue, the knowledge we gain from the endeavor makes the time spent working on it well worth it.
